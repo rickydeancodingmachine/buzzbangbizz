@@ -9,7 +9,7 @@ import {
   ListGroup,
   ListGroupItem,
 } from 'reactstrap';
-import { Test, BuzzBangBizzForm } from './BuzzBangBizz';
+import { Test, BuzzBangBizzForm } from '../App';
 
 interface InputCheckboxesProps {
   test: Test;

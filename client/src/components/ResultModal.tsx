@@ -10,7 +10,7 @@ import {
 } from 'reactstrap';
 import DonavanPoorImg from '../assets/donavan_poor.jpg';
 import DonavanWiseImg from '../assets/donavan_wise.png';
-import { Result, Test, BuzzBangBizzForm } from './BuzzBangBizz';
+import { Result, Test, BuzzBangBizzForm } from '../App';
 
 interface ResultModalProps {
   isOpen: boolean;
@@ -40,7 +40,7 @@ const ResultModal: React.SFC<ResultModalProps> = (props: ResultModalProps) => {
   return (
     <Modal centered isOpen={isOpen}>
       <ModalHeader>
-        {result.valid ? 'Congratulations!' : "Ooo we're sorry..."}
+        {result.valid ? 'Congratulations!' : 'Sorry Charlie...'}
       </ModalHeader>
       <ModalBody>
         <ListGroup>

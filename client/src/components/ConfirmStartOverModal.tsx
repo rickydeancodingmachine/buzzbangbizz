@@ -12,11 +12,12 @@ const ConfirmStartOverModal: React.SFC<ConfirmStartOverModalProps> = (
   const { isOpen, toggleModal, startOver } = props;
   return (
     <Modal centered isOpen={isOpen} toggle={toggleModal}>
-      <ModalBody>
+      <ModalBody className="pt-5 pb-5">
         <Row>
           <Col xs="12" className="mb-2">
             <Button
-              className="w-100"
+              size="lg"
+              className="w-100 mb-3"
               color="danger"
               outline
               onClick={startOver}>
@@ -24,7 +25,11 @@ const ConfirmStartOverModal: React.SFC<ConfirmStartOverModalProps> = (
             </Button>{' '}
           </Col>
           <Col xs="12">
-            <Button className="w-100" color="secondary" onClick={toggleModal}>
+            <Button
+              size="lg"
+              className="w-100 mt-3"
+              color="secondary"
+              onClick={toggleModal}>
               Cancel
             </Button>
           </Col>

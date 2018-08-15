@@ -1,3 +1,3 @@
-export const isMultiple = (testNum: number, isMultipleNum: number) => {
-  return isMultipleNum % testNum === 0;
+export const isMultiple = (numAgainst: number, numTestMultiple: number) => {
+  return numTestMultiple % numAgainst === 0;
 };
