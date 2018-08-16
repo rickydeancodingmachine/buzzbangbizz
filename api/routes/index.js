@@ -2,7 +2,6 @@ const dotenv = require('dotenv');
 dotenv.config();
 const express = require('express');
 const router = express.Router();
-const moment = require('moment');
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const bcrypt = require('bcrypt');
