@@ -31,8 +31,6 @@ function clearIdToken() {
 
 // Get and store id_token in local storage
 export function setIdToken(idToken: any) {
-  // tslint:disable-next-line
-  console.log('setting token', idToken);
   localStorage.setItem(ID_TOKEN_KEY, idToken);
   return true;
 }

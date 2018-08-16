@@ -18,8 +18,9 @@ router.get(
       .get({ id: req.user, username: null })
       .then(user => {
         res.status(201).json({
-          id: user.id,
-          num: user.num,
+          id: user.dataValues.id,
+          username: user.dataValues.username,
+          num: user.dataValues.num,
         });
       })
       .catch(error => {
@@ -46,7 +47,11 @@ router.post('/api/users/create', (req, res) => {
           res.status(201).json({
             msg: 'Successfully created user',
             token: 'bearer ' + token,
-            user: user.dataValues,
+            user: {
+              id: user.dataValues.id,
+              username: user.dataValues.username,
+              num: user.dataValues.num,
+            },
           });
         })
         .catch(error => {
@@ -82,7 +87,11 @@ router.post('/api/users/login', (req, res) => {
             res.status(200).json({
               msg: 'Successfully authenticated user',
               token: 'bearer ' + token,
-              user: { id: user.dataValues.id, num: user.dataValues.num },
+              user: {
+                id: user.dataValues.id,
+                username: user.dataValues.username,
+                num: user.dataValues.num,
+              },
             });
           } else {
             // password failed
@@ -111,10 +120,26 @@ router.post(
         console.log('success', user);
         res.status(201).json({
           msg: 'Successfully saved progress',
+          newStartingNum: req.body.num,
         });
       })
       .catch(error => {
         console.log('fail', error);
+        res.status(500).json(error);
+      });
+  },
+);
+
+router.get(
+  '/api/leaderboard',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    return req.db.user
+      .get({ id: null, username: null })
+      .then(user => {
+        res.status(201).json(user);
+      })
+      .catch(error => {
         res.status(500).json(error);
       });
   },

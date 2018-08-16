@@ -9,7 +9,7 @@ import ResultModal from './ResultModal';
 import { BuzzBangBizzForm, Result, Test } from '../App';
 
 interface OwnProps {
-  user: { id: number; num: number };
+  user: { id: number; username: string; num: number };
   error: { status: boolean; alert: { color: string; msg: string } };
   saveProgress: () => void;
   saveAlert: boolean;

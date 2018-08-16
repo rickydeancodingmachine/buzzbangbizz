@@ -5,7 +5,16 @@ import {
   Link,
   RouteComponentProps,
 } from 'react-router-dom';
-import { Container, Input, Alert, Row, Col, Button, Badge } from 'reactstrap';
+import {
+  Container,
+  Input,
+  Alert,
+  Row,
+  Col,
+  Button,
+  Badge,
+  ListGroupItem,
+} from 'reactstrap';
 import Spinner from '../utils/Spinner/Spinner';
 
 interface OwnProps {
@@ -182,98 +191,100 @@ class Signup extends React.Component<SignupProps, SignupState> {
       password_again_status,
     } = this.state;
     return (
-      <Container fluid>
-        {user && <Redirect to={'/'} />}
-        {!user && loading && <Spinner />}
-        {!user && status && <Alert color={alert.color}>{alert.msg}</Alert>}
-        {!user &&
-          !loading && (
-            <div>
-              <Row className="justify-content-center">
-                <Col xs="12" sm="10" md="5" lg="4">
-                  <Row>
-                    <Col>Username</Col>
-                    <Col xs="auto">
-                      <Badge color="secondary">{username_status}</Badge>
-                    </Col>
-                  </Row>
-                </Col>
-              </Row>
-              <Row className="justify-content-center">
-                <Col xs="12" sm="10" md="5" lg="4">
-                  <Input
-                    onChange={this.changeHandler}
-                    onBlur={this.blurHandler}
-                    name="username"
-                    type="text"
-                    value={username}
-                  />
-                </Col>
-              </Row>
-              <Row className="justify-content-center mt-3">
-                <Col xs="12" sm="10" md="5" lg="4">
-                  <Row>
-                    <Col>Password</Col>
-                    <Col xs="auto">
-                      <Badge color="secondary">{password_status}</Badge>
-                    </Col>
-                  </Row>
-                </Col>
-              </Row>
-              <Row className="justify-content-center">
-                <Col xs="12" sm="10" md="5" lg="4">
-                  <Input
-                    onChange={this.changeHandler}
-                    onBlur={this.blurHandler}
-                    name="password"
-                    type="password"
-                    value={password}
-                  />
-                </Col>
-              </Row>
-              <Row className="justify-content-center mt-3">
-                <Col xs="12" sm="10" md="5" lg="4">
-                  <Row>
-                    <Col>Password again</Col>
-                    <Col xs="auto">
-                      <Badge color="secondary">{password_again_status}</Badge>
-                    </Col>
-                  </Row>
-                </Col>
-              </Row>
-              <Row className="justify-content-center">
-                <Col xs="12" sm="10" md="5" lg="4">
-                  <Input
-                    onChange={this.changeHandler}
-                    onBlur={this.blurHandler}
-                    name="password_again"
-                    type="password"
-                    value={password_again}
-                  />
-                </Col>
-              </Row>
-              <Row className="justify-content-center mt-3">
-                <Col xs="12" sm="10" md="5" lg="4">
-                  <Button
-                    className="w-100"
-                    color="primary"
-                    onClick={() =>
-                      onSubmit({ username, password, password_again })
-                    }>
-                    Signup
-                  </Button>
-                </Col>
-              </Row>
-              <Row className="justify-content-center mt-3">
-                <Col xs="12" sm="10" md="5" lg="4">
-                  <Container className="border p-3 mb-5 bg-white rounded">
-                    <Link to="/login">Or log into an existing account</Link>
-                  </Container>
-                </Col>
-              </Row>
-            </div>
-          )}
-      </Container>
+      <ListGroupItem>
+        <Container fluid>
+          {user && <Redirect to={'/'} />}
+          {!user && loading && <Spinner />}
+          {!user && status && <Alert color={alert.color}>{alert.msg}</Alert>}
+          {!user &&
+            !loading && (
+              <div>
+                <Row className="justify-content-center">
+                  <Col xs="12" sm="10" md="5" lg="4">
+                    <Row>
+                      <Col>Username</Col>
+                      <Col xs="auto">
+                        <Badge color="secondary">{username_status}</Badge>
+                      </Col>
+                    </Row>
+                  </Col>
+                </Row>
+                <Row className="justify-content-center">
+                  <Col xs="12" sm="10" md="5" lg="4">
+                    <Input
+                      onChange={this.changeHandler}
+                      onBlur={this.blurHandler}
+                      name="username"
+                      type="text"
+                      value={username}
+                    />
+                  </Col>
+                </Row>
+                <Row className="justify-content-center mt-3">
+                  <Col xs="12" sm="10" md="5" lg="4">
+                    <Row>
+                      <Col>Password</Col>
+                      <Col xs="auto">
+                        <Badge color="secondary">{password_status}</Badge>
+                      </Col>
+                    </Row>
+                  </Col>
+                </Row>
+                <Row className="justify-content-center">
+                  <Col xs="12" sm="10" md="5" lg="4">
+                    <Input
+                      onChange={this.changeHandler}
+                      onBlur={this.blurHandler}
+                      name="password"
+                      type="password"
+                      value={password}
+                    />
+                  </Col>
+                </Row>
+                <Row className="justify-content-center mt-3">
+                  <Col xs="12" sm="10" md="5" lg="4">
+                    <Row>
+                      <Col>Password again</Col>
+                      <Col xs="auto">
+                        <Badge color="secondary">{password_again_status}</Badge>
+                      </Col>
+                    </Row>
+                  </Col>
+                </Row>
+                <Row className="justify-content-center">
+                  <Col xs="12" sm="10" md="5" lg="4">
+                    <Input
+                      onChange={this.changeHandler}
+                      onBlur={this.blurHandler}
+                      name="password_again"
+                      type="password"
+                      value={password_again}
+                    />
+                  </Col>
+                </Row>
+                <Row className="justify-content-center mt-3">
+                  <Col xs="12" sm="10" md="5" lg="4">
+                    <Button
+                      className="w-100"
+                      color="primary"
+                      onClick={() =>
+                        onSubmit({ username, password, password_again })
+                      }>
+                      Signup
+                    </Button>
+                  </Col>
+                </Row>
+                <Row className="justify-content-center mt-3">
+                  <Col xs="12" sm="10" md="5" lg="4">
+                    <Container className="border p-3 mb-5 bg-white rounded">
+                      <Link to="/login">Or log into an existing account</Link>
+                    </Container>
+                  </Col>
+                </Row>
+              </div>
+            )}
+        </Container>
+      </ListGroupItem>
     );
   }
 }

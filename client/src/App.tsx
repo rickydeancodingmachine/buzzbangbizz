@@ -9,7 +9,6 @@ import {
   NavLink,
   TabPane,
   TabContent,
-  // Button,
 } from 'reactstrap';
 import PrivateRoute from './hoc/PrivateRoute';
 import Login, { LoginForm } from './components/Login';
@@ -37,6 +36,7 @@ interface AppState {
   activeTab: string;
   user: {
     id: number;
+    username: string;
     num: number;
   };
   buzzbangbizz: {
@@ -62,6 +62,7 @@ class App extends React.Component<{}, AppState> {
     activeTab: '1',
     user: {
       id: 0,
+      username: '',
       num: 0,
     },
     buzzbangbizz: {
@@ -99,6 +100,7 @@ class App extends React.Component<{}, AppState> {
           ...this.state,
           user: {
             id: response.data.id,
+            username: response.data.username,
             num: response.data.num,
           },
           buzzbangbizz: {
@@ -132,7 +134,7 @@ class App extends React.Component<{}, AppState> {
   sudoLogout = () => {
     logout();
     this.setState({
-      user: { id: 0, num: 0 },
+      user: { id: 0, username: '', num: 0 },
       loggedIn: false,
     });
   };
@@ -254,6 +256,10 @@ class App extends React.Component<{}, AppState> {
       .then(response => {
         this.setState({
           ...this.state,
+          user: {
+            ...this.state.user,
+            num: response.data.newStartingNum,
+          },
           loading: false,
           saveAlert: true,
         });
@@ -317,50 +323,29 @@ class App extends React.Component<{}, AppState> {
     });
   };
   startOver = () => {
-    this.setState({ loading: true });
-    axios
-      .post('/save', { num: 1 })
-      .then(response => {
-        this.setState({
-          ...this.state,
-          loading: false,
-          buzzbangbizz: {
-            ...this.state.buzzbangbizz,
-            started: true,
-            num: 1,
-            guess: {
-              ...this.state.buzzbangbizz.guess,
-              buzz: false,
-              bang: false,
-              bizz: false,
-            },
-            result: {
-              ...this.state.buzzbangbizz.result,
-              buzz: false,
-              bang: false,
-              bizz: false,
-            },
-            resultModal: false,
-            confirmStartOverModal: false,
-          },
-        });
-      })
-      .catch(error => {
-        if (error.response.status === 401) {
-          // unauthorized request
-          logout();
-          this.setState({ ...this.state, loggedIn: false, loading: false });
-        } else {
-          this.setState({
-            ...this.state,
-            error: {
-              status: true,
-              alert: { color: 'danger', msg: 'Something went wrong! Reload.' },
-            },
-            loading: false,
-          });
-        }
-      });
+    this.setState({
+      ...this.state,
+      loading: false,
+      buzzbangbizz: {
+        ...this.state.buzzbangbizz,
+        started: true,
+        num: this.state.user.num,
+        guess: {
+          ...this.state.buzzbangbizz.guess,
+          buzz: false,
+          bang: false,
+          bizz: false,
+        },
+        result: {
+          ...this.state.buzzbangbizz.result,
+          buzz: false,
+          bang: false,
+          bizz: false,
+        },
+        resultModal: false,
+        confirmStartOverModal: false,
+      },
+    });
   };
   guessChange = (guessKey: string): void => {
     this.setState({
@@ -425,89 +410,96 @@ class App extends React.Component<{}, AppState> {
                 <h1>BuzzBangBizz!</h1>
                 <p>How well do you know your multiples? Play to find out!</p>
               </ListGroupItem>
-              <ListGroupItem>
-                {this.state.loggedIn && (
-                  <Nav tabs fill className="mb-4">
-                    <NavItem>
-                      <NavLink
-                        className={this.state.activeTab === '1' ? 'active' : ''}
-                        onClick={() => {
-                          this.toggleTabs('1');
-                        }}>
-                        Play
-                      </NavLink>
-                    </NavItem>
-                    <NavItem>
-                      <NavLink
-                        className={this.state.activeTab === '2' ? 'active' : ''}
-                        onClick={() => {
-                          this.toggleTabs('2');
-                        }}>
-                        Settings
-                      </NavLink>
-                    </NavItem>
-                  </Nav>
-                )}
-                <TabContent activeTab={this.state.activeTab}>
-                  <TabPane tabId="1">
-                    <Switch>
-                      <PrivateRoute
-                        path="/"
-                        exact
-                        user={this.state.loggedIn}
-                        loginPath="/login"
-                        component={() => (
-                          <BuzzBangBizz
-                            user={this.state.user}
-                            error={this.state.error}
-                            saveProgress={this.saveProgress}
-                            saveAlert={this.state.saveAlert}
-                            buzzbangbizz={{
-                              state: this.state.buzzbangbizz,
-                              toggleStartOverModal: this.toggleStartOverModal,
-                              startOver: this.startOver,
-                              nextNum: this.nextNum,
-                              guessChange: this.guessChange,
-                              submitGuess: this.submitGuess,
-                            }}
-                          />
-                        )}
-                      />
-                      <Route
-                        path="/login"
-                        exact
-                        component={() => (
-                          <Login
-                            user={this.state.loggedIn}
-                            loading={this.state.loading}
-                            onSubmit={this.submitLoggin}
-                            error={this.state.error}
-                          />
-                        )}
-                      />
-                      <Route
-                        path="/signup"
-                        exact
-                        component={() => (
-                          <Signup
-                            user={this.state.loggedIn}
-                            loading={this.state.loading}
-                            onSubmit={this.submitSignup}
-                            error={this.state.error}
-                          />
-                        )}
-                      />
-                      <Route render={() => <Redirect to="/" />} />
-                    </Switch>
-                  </TabPane>
-                  <TabPane tabId="2">
-                    <Settings
-                      test={this.state.buzzbangbizz.test}
-                      changeTest={this.changeTest}
+              <Switch>
+                <Route
+                  path="/login"
+                  exact
+                  render={() => (
+                    <Login
+                      user={this.state.loggedIn}
+                      loading={this.state.loading}
+                      onSubmit={this.submitLoggin}
+                      error={this.state.error}
                     />
-                  </TabPane>
-                </TabContent>
-              </ListGroupItem>
+                  )}
+                />
+                <Route
+                  path="/signup"
+                  exact
+                  render={() => (
+                    <Signup
+                      user={this.state.loggedIn}
+                      loading={this.state.loading}
+                      onSubmit={this.submitSignup}
+                      error={this.state.error}
+                    />
+                  )}
+                />
+                <PrivateRoute
+                  path="/"
+                  exact
+                  user={this.state.loggedIn}
+                  loginPath="/login"
+                  render={() => (
+                    <div>
+                      <ListGroupItem>
+                        {this.state.loggedIn && (
+                          <Nav tabs fill className="mb-4">
+                            <NavItem>
+                              <NavLink
+                                className={
+                                  this.state.activeTab === '1' ? 'active' : ''
+                                }
+                                onClick={() => {
+                                  this.toggleTabs('1');
+                                }}>
+                                Play
+                              </NavLink>
+                            </NavItem>
+                            <NavItem>
+                              <NavLink
+                                className={
+                                  this.state.activeTab === '2' ? 'active' : ''
+                                }
+                                onClick={() => {
+                                  this.toggleTabs('2');
+                                }}>
+                                Settings
+                              </NavLink>
+                            </NavItem>
+                          </Nav>
+                        )}
+                        <TabContent activeTab={this.state.activeTab}>
+                          <TabPane tabId="1">
+                            <BuzzBangBizz
+                              user={this.state.user}
+                              error={this.state.error}
+                              saveProgress={this.saveProgress}
+                              saveAlert={this.state.saveAlert}
+                              buzzbangbizz={{
+                                state: this.state.buzzbangbizz,
+                                toggleStartOverModal: this.toggleStartOverModal,
+                                startOver: this.startOver,
+                                nextNum: this.nextNum,
+                                guessChange: this.guessChange,
+                                submitGuess: this.submitGuess,
+                              }}
+                            />
+                          </TabPane>
+                          <TabPane tabId="2">
+                            <Settings
+                              username={this.state.user.username}
+                              test={this.state.buzzbangbizz.test}
+                              changeTest={this.changeTest}
+                            />
+                          </TabPane>
+                        </TabContent>
+                      </ListGroupItem>
+                    </div>
+                  )}
+                />
+                <Route render={() => <Redirect to="/" />} />
+              </Switch>
             </ListGroup>
           </Container>
         </div>

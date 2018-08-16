@@ -2,46 +2,48 @@ import * as React from 'react';
 import { ListGroup, ListGroupItem, Button, Row, Col, Input } from 'reactstrap';
 import { logout } from '../utils/AuthService';
 import { Test } from '../App';
+import Leaderboard from './Leaderboard';
 
 interface OwnProps {
+  username: string;
   test: Test;
   changeTest: (key: string, value: number) => void;
 }
 
 type SettingsProps = OwnProps;
 
-class SettingsChekboxes extends React.Component<SettingsProps> {
+class Settings extends React.Component<SettingsProps> {
   render() {
-    const { test, changeTest } = this.props;
+    const { username, test, changeTest } = this.props;
     const TestNumberForm: JSX.Element[] = Object.keys(test).map(
       (key: string) => {
         return (
-          <ListGroupItem key={key}>
-            <Row className="justify-content-center">
-              <Col xs="3" sm="2" md="1">
-                {key + ':'}
-              </Col>
-              <Col xs="9" sm="8" md="5" lg="4">
-                <Input
-                  type="number"
-                  onChange={(e: React.FormEvent<HTMLInputElement>) =>
-                    changeTest(key, Number(e.currentTarget.value))
-                  }
-                  value={test[key].toString()}
-                />
-              </Col>
-            </Row>
-          </ListGroupItem>
+          <Row key={key} className="justify-content-center m-2">
+            <Col xs="3" sm="2" md="1">
+              {key + ':'}
+            </Col>
+            <Col xs="9" sm="8" md="5" lg="4">
+              <Input
+                type="number"
+                onChange={(e: React.FormEvent<HTMLInputElement>) =>
+                  changeTest(key, Number(e.currentTarget.value))
+                }
+                value={test[key].toString()}
+              />
+            </Col>
+          </Row>
         );
       },
     );
+
     return (
       <div>
         <ListGroup>
-          <ListGroupItem active>
-            <h6 className="m-0">Test Numbers</h6>
+          <ListGroupItem color="light">
+            <h5 className="m-0">Test Numbers</h5>
           </ListGroupItem>
-          {TestNumberForm}
+          <ListGroupItem>{TestNumberForm}</ListGroupItem>
+          <Leaderboard username={username} />
         </ListGroup>
         <Button
           color="danger"
@@ -57,4 +59,4 @@ class SettingsChekboxes extends React.Component<SettingsProps> {
   }
 }
 
-export default SettingsChekboxes;
+export default Settings;
