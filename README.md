@@ -80,8 +80,40 @@ Used Sequelize ORM as it is an ORM designed for Node (Javascript) which makes co
 
 No session management. Used JSON Web Tokens and set a 1 hour expiration time. Consequently, no real "logout" functionality on the backend, as JSON Web Token will always authorize request until past expiration time. Implemented a sudo-logout function on the client, which just removes the auth token from local storage, simulating logout functionality for the client.
 
+Instructions said to use a minimum of HTML, CSS, and Javascript, so I chose to use react for the client because a) it makes managing state across multiple components much easier than without it, and b) React provides a great starter package which include webpack and babel, allowing me to break my Single Page App javascript and css into components and write es6. I considered the api code to be not as important for this project as the client code. Therefore, I wrote just enough to get the small number of end points to work properly. I used express (and a small suit of dependencies that go along with it), to quickly get the endpoints running. I also used Sequelize, a node ORM that works with MySQL, as it makes starting the database, and migrating the db schema very easy on any machine. I didn't implement Typescript for the api, as I'd never done it myself, and it would require more learning that I was able to commit for this project.
+
 ## Missing
 
 Error boundaries for api and client.
 
 ## Explanation of Dependencies
+
+### Client
+
+```bash
+axios # simple library for making XMLHttpRequests in a developer friendly way
+bootstrap # VERY easy way to make UI look great across browsers and screen-sizes without spending tons of time.
+jwt-decode # Easy library for decoding JSON Web Tokens
+react # explained above
+react-dom # required to use react
+react-router-dom # mounts react to the DOM
+react-scripts # utility library for react start scripts
+react-scripts-ts # need this when using typescript
+reactstrap # Bootstrap components designed for React (i.e. <div class="row"> => <Row>). Lots of component types, just makes creating great UI's super easy.
+```
+
+### Api
+
+```bash
+bcrypt # simple library to hash passwords
+body-parser # express middleware which extracts the body from the request stream. Saves developer the trouble of building the body from the request stream themselves.
+dotenv # loads environment variables, so sensitive variables can be kept in .env file, and exclude from git commits
+express # explained above
+morgan # HTTP request logger middleware
+mysql2 # MySQL client for node
+passport # simple way to create sessions and sign JWT tokens.
+passport-jwt # required to use passport JWT strategy
+sequelize # explained above
+sequelize-cli # nice command line interface library, make migrating schema simple from the command line.
+serve-favicon # helpful express middleware to serve favicon.ico to client
+```
