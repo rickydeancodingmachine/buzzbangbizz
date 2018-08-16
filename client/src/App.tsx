@@ -55,6 +55,7 @@ interface AppState {
     alert: { color: string; msg: string };
   };
   saveAlert: boolean;
+  lastUpdate: number;
 }
 
 class App extends React.Component<{}, AppState> {
@@ -91,6 +92,7 @@ class App extends React.Component<{}, AppState> {
     loggedIn: isLoggedIn(),
     error: { status: false, alert: { color: '', msg: '' } },
     saveAlert: false,
+    lastUpdate: 0,
   };
   componentDidMount() {
     axios
@@ -262,6 +264,7 @@ class App extends React.Component<{}, AppState> {
           },
           loading: false,
           saveAlert: true,
+          lastUpdate: +new Date(),
         });
         setTimeout(() => {
           this.setState({
@@ -488,6 +491,7 @@ class App extends React.Component<{}, AppState> {
                           </TabPane>
                           <TabPane tabId="2">
                             <Settings
+                              lastUpate={this.state.lastUpdate}
                               username={this.state.user.username}
                               test={this.state.buzzbangbizz.test}
                               changeTest={this.changeTest}

@@ -6,6 +6,7 @@ import axios from 'axios';
 
 interface OwnProps {
   username: string;
+  lastUpdate: number;
 }
 
 interface LeaderboardState {
@@ -34,10 +35,13 @@ class LeaderboardChekboxes extends React.Component<
   componentDidMount() {
     this.refresh();
   }
+  componentDidUpdate(prevProps: any) {
+    if (prevProps.lastUpdate !== this.props.lastUpdate) {
+      this.refresh();
+    }
+  }
 
   refresh = () => {
-    // tslint:disable-next-line
-    console.log('refresh');
     axios
       .get('/leaderboard')
       .then(response => {

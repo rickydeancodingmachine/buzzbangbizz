@@ -5,6 +5,7 @@ import registerServiceWorker from './registerServiceWorker';
 import axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
 import { getIdToken } from './utils/AuthService';
 
+// configuing axios
 axios.defaults.baseURL = '/api';
 axios.defaults.headers.common.Authorization = getIdToken();
 
@@ -26,5 +27,6 @@ axios.interceptors.response.use(
   },
 );
 
+// mounting react to DOM
 ReactDOM.render(<App />, document.getElementById('root'));
 registerServiceWorker();

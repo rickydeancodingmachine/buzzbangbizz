@@ -5,7 +5,7 @@
 - git
 - node 10.x - Either directly from [nodejs.org](https://nodejs.org), or using the [n package](https://npmjs.com/package/n) or on a Mac using [brew](https://brew.sh/).
 - yarn 1.7+ - Either directly from [yarnpkg.org](https://yarnpkg.com/en/), or on a Mac using [brew](https://brew.sh/).
-- mysql community earliest 5.x - https://dev.mysql.com/downloads/mysql/
+- mysql community earliest 5.x - https://dev.mysql.com/downloads/mysql/ (if you don't want to install this, included is a docker-compose.yml file. If you have docker, you can spin up this image which contains mysql. )
 
 ## Quickstart
 
@@ -16,7 +16,7 @@
     ```bash
     PORT=9000
     NODE_ENV=development
-    AUTH_SECRET=WriteYourOwnSecretIfYouWant
+    SECRET_OR_KEY=WriteYourOwnSecret
     ```
 
 1.  In a terminal, install api dependencies:
@@ -30,25 +30,26 @@
 1.  Update file at `./api/database/config/config.json`
 
     ```bash
-    # replace `root` with your mysql user and `password` with the password for that user
+    # replace `root` with any mysql user you want and `password` with the password for that user. But if you're using docker, then leave the config file. If you change the docker-compose.yml file password value or port value, you'll have to make the changes in the database config.json file as well.
     ```
 
 1.  Create database in MySQL (from /api folder)
 
     ```bash
-    mysql -u root -ppassword -Bse "CREATE DATABASE BuzzBangBizzRicky" # change `root` and `password` to match your config file
+    mysql -u root -ppassword -Bse "CREATE DATABASE BuzzBangBizzRicky" # change `root` and `password` to match your config file or change `password` to match your docker-compose.yml file
     ```
 
 1.  Migrate db schema (from /api folder)
 
     ```bash
-    sequelize db:migrate # may get error denying access for this command depending on MySQL settings
+    ./node_modules/.bin/sequelize db:migrate # may get error denying access for this command depending on MySQL settings
     ```
 
 1.  Install client dependencies
 
     ```bash
-    # with repo root as current directory
+    # get from current ./api directory to ./client directory
+    cd ..
     cd ./client
     yarn # installs dependencies for all components
     ```
@@ -80,9 +81,9 @@ Used Sequelize ORM as it is an ORM designed for Node (Javascript) which makes co
 
 No session management. Used JSON Web Tokens and set a 1 hour expiration time. Consequently, no real "logout" functionality on the backend, as JSON Web Token will always authorize request until past expiration time. Implemented a sudo-logout function on the client, which just removes the auth token from local storage, simulating logout functionality for the client.
 
-Instructions said to use a minimum of HTML, CSS, and Javascript, so I chose to use react for the client because a) it makes managing state across multiple components much easier than without it, and b) React provides a great starter package which include webpack and babel, allowing me to break my Single Page App javascript and css into components and write es6. I considered the api code to be not as important for this project as the client code. Therefore, I wrote just enough to get the small number of end points to work properly. I used express (and a small suit of middleware that go along with it), to quickly get the endpoints running. I also used Sequelize, a node ORM that works with MySQL, as it makes starting the database, and migrating the db schema very easy on any machine. I didn't implement Typescript for the api, as I'd never done it myself, and it would require more learning that I was able to commit for this project.
+Instructions said to use a minimum of HTML, CSS, and Javascript, so I chose to use react for the client because a) it makes managing state across multiple components much easier than without it, and b) React provides a great starter package which include webpack and babel, allowing me to break my Single Page App javascript and css into components and write es6. I considered the api code to be not as important for this project as the client code. Therefore, I wrote just enough to get the small number of end points to work properly. I used express (and a small suit of middleware that goes along with it), to quickly get the endpoints running. I also used Sequelize, a node ORM that works with MySQL, as it makes starting the database, and migrating the db schema very easy on any machine. I didn't implement Typescript for the api, as I'd never done it myself, and it would require more learning that I was able to commit for this project.
 
-## Missing
+## Missing (that I'm aware of)
 
 Error boundaries for api and client.
 

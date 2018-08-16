@@ -8,13 +8,14 @@ interface OwnProps {
   username: string;
   test: Test;
   changeTest: (key: string, value: number) => void;
+  lastUpate: number;
 }
 
 type SettingsProps = OwnProps;
 
 class Settings extends React.Component<SettingsProps> {
   render() {
-    const { username, test, changeTest } = this.props;
+    const { username, test, changeTest, lastUpate } = this.props;
     const TestNumberForm: JSX.Element[] = Object.keys(test).map(
       (key: string) => {
         return (
@@ -43,7 +44,7 @@ class Settings extends React.Component<SettingsProps> {
             <h5 className="m-0">Test Numbers</h5>
           </ListGroupItem>
           <ListGroupItem>{TestNumberForm}</ListGroupItem>
-          <Leaderboard username={username} />
+          <Leaderboard username={username} lastUpdate={lastUpate} />
         </ListGroup>
         <Button
           color="danger"
